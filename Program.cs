@@ -78,13 +78,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Configure swagger
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
 // Use CORS middleware -- IMPORTANT: This must be placed after UseRouting and before UseEndpoints/MapControllers
