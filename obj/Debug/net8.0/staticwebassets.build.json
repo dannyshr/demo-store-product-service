@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "PqXl88tTwYpbSntEWWpicDV0r52rJ/LyoBDAphQEnnM=",
+  "Source": "demo-store-product-service",
+  "BasePath": "_content/demo-store-product-service",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
