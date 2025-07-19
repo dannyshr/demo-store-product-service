@@ -1,12 +1,19 @@
 
-namespace demo_store_product_service.Config; 
+namespace demo_store_product_service.Config;
+
+using Microsoft.Extensions.Configuration;
 
 public class DatabaseSettingsConfig
 {
     public string Server { get; set; } = string.Empty;
     public string Database { get; set; } = string.Empty;
+
+    [ConfigurationKeyName("ProductService-Db-UserId")] // Map to the Key Vault secret name
     public string UserId { get; set; } = string.Empty;
+
+    [ConfigurationKeyName("ProductService-Db-Password")] // Map to the Key Vault secret name
     public string Password { get; set; } = string.Empty;
+
     public string OtherParams { get; set; } = string.Empty;
 
     // Method to construct the full connection string

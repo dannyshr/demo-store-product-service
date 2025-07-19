@@ -2,11 +2,44 @@ using Microsoft.EntityFrameworkCore;
 using demo_store_product_service.Data;
 using demo_store_product_service.Config;
 using Microsoft.Extensions.Options;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Azure.Identity;
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationInsightsTelemetry();
+
+// Get the Key Vault URI from configuration (e.g., from appsettings.json or an App Service setting)
+var keyVaultUri = builder.Configuration["KeyVaultUri"];
+Console.WriteLine($"[Config Debug] KeyVaultUri from config: {keyVaultUri ?? "NULL/EMPTY"}");
+
+if (!string.IsNullOrEmpty(keyVaultUri))
+{
+    try
+    {
+        // Configure Key Vault as a configuration source
+        builder.Configuration.AddAzureKeyVault(
+            new Uri(keyVaultUri),
+            new DefaultAzureCredential());
+        Console.WriteLine("[Config Debug] Azure Key Vault configuration provider added successfully.");
+
+        // 2. Check if secrets are accessible directly from IConfiguration after Key Vault is added
+        //    (Note: This requires your local dev environment to be authenticated to Azure)
+        var testUserId = builder.Configuration["ProductService-Db-UserId"];
+        var testPassword = builder.Configuration["ProductService-Db-Password"];
+        Console.WriteLine($"[Config Debug] Test UserId from IConfiguration (after KV): {testUserId ?? "NULL/EMPTY"}");
+        Console.WriteLine($"[Config Debug] Test Password from IConfiguration (after KV): {testPassword ?? "NULL/EMPTY"}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Config Error] Failed to add Azure Key Vault configuration: {ex.Message}");
+        // Consider re-throwing or handling this more gracefully in production
+    }
+}
+else
+{
+    Console.WriteLine("[Config Debug] KeyVaultUri is not set. Skipping Azure Key Vault configuration.");
+}
 
 // Bind the custom configuration section to your C# class
 builder.Services.Configure<DatabaseSettingsConfig>(
@@ -17,6 +50,16 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
 {
     // Resolve IOptions<DatabaseSettingsConfig> from the serviceProvider
     var dbSettings = serviceProvider.GetRequiredService<IOptions<DatabaseSettingsConfig>>().Value;
+    var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+    dbSettings.UserId = configuration["ProductService-Db-UserId"] ?? dbSettings.UserId;
+    dbSettings.Password = configuration["ProductService-Db-Password"] ?? dbSettings.Password;
+
+    // 3. Check the values within the bound DatabaseSettingsConfig object
+    Console.WriteLine($"[Config Debug] dbSettings.Server: {dbSettings.Server ?? "NULL/EMPTY"}");
+    Console.WriteLine($"[Config Debug] dbSettings.Database: {dbSettings.Database ?? "NULL/EMPTY"}");
+    Console.WriteLine($"[Config Debug] dbSettings.UserId: {dbSettings.UserId ?? "NULL/EMPTY"}");
+    Console.WriteLine($"[Config Debug] dbSettings.Password: {dbSettings.Password ?? "NULL/EMPTY"}");
+    Console.WriteLine($"[Config Debug] dbSettings.OtherParams: {dbSettings.OtherParams ?? "NULL/EMPTY"}");
 
     // Construct the connection string using the settings
     var connectionString = dbSettings.ToConnectionString();

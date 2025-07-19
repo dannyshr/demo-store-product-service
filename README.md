@@ -42,11 +42,12 @@ Update your appsettings.Development.json file with your local SQL database conne
       "Microsoft.AspNetCore": "Warning"
     }
   },
+  "KeyVaultUri": "https://demostore-kv.vault.azure.net/",
   "DatabaseSettingsConfig": {
     "Server": "localhost", // your local SQL Server instance
     "Database": "DemoStoreProductsDB",
-    "UserId": "yourLocalDbUser",
-    "Password": "yourLocalDbPassword",
+    "UserId": "",
+    "Password": "",
     "OtherParams": "MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   },
   "CorsSettingsConfig": {
@@ -97,13 +98,16 @@ DatabaseSettingsConfig__Server: tcp:your-azure-sql-server.database.windows.net,1
 
 DatabaseSettingsConfig__Database: DemoStoreProductsDB
 
-DatabaseSettingsConfig__UserId: Your Azure SQL DB username
-
-DatabaseSettingsConfig__Password: Your Azure SQL DB password
-
 DatabaseSettingsConfig__OtherParams: MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
 
 CorsSettingsConfig__AllowedOrigins__0: (Your deployed frontend URL)
+
+### Key Vault Variables in Azure
+The following keys are defined in the demostore-kv Key Vault in Azure, in order to provide a protected way to store the database's user and password.
+
+ProductService-Db-UserId
+
+ProductService-Db-Password
 
 ## 🌐 Deployed API Endpoints
 Base URL: https://demostoreproductapi-dannys-gkg9eehhgjhaaab5.israelcentral-01.azurewebsites.net
