@@ -1,0 +1,95 @@
+# Visual Studio files
+.vs/
+.vscode/ # VS Code settings, if not shared
+*.user
+*.suo
+*.opensdf
+*.sdf
+*.vssscc
+*.vsscc
+*.vspcc
+*.builds
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+*.exe
+*.dll
+*.pdb
+*.tmp
+*.log
+*.bak
+*.ncb
+*.opendb
+*.aps
+*.pch
+*.idb
+*.ipch
+*.obj
+*.res
+*.pch
+*.ilk
+*.aps
+*.bsc
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.opt
+*.res
+*.rgs
+*.rc.o
+*.tds
+*.map
+*.stackdump
+
+# NuGet packages
+# NuGet packages
+# packages/ is for older project.json/packages.config style
+# For SDK-style projects, packages are restored to a global cache, so 'packages/' is less common
+packages/
+# NuGet cache and temp files
+.nuget/
+*.nupkg
+*.snupkg
+*.cache
+project.lock.json # Old lock file, for project.json
+obj/project.assets.json # New lock file, generated in obj/
+obj/*.csproj.nuget.*
+.config/
+.config/dotnet-tools.json # If you use local .NET tools, you might want to commit this.
+
+# Rider IDE files
+.idea/
+
+# Dotnet tool local installation
+.dotnet/
+
+# Test results
+TestResults/
+*.trx
+
+# User secrets (if used locally)
+# This is usually appsettings.Development.json if it contains sensitive data,
+# but typically appsettings.Development.json is safe to commit if it only has local dev config.
+# If you use dotnet user-secrets, they are stored outside the project.
+# You might exclude specific appsettings files if they contain production secrets NOT handled by Azure App Settings.
+# For example, if you had a file specifically for local secrets:
+# appsettings.LocalSecrets.json
+
+# Azure-related files (if generated locally)
+*.publishsettings
+*.sublime-project
+*.sublime-workspace
+
+# VS Code specific files (if you use VS Code)
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# Any other specific temporary files or directories
+# For example, if you have a custom 'logs' folder:
+# logs/
