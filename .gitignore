@@ -93,3 +93,5 @@ TestResults/
 # Any other specific temporary files or directories
 # For example, if you have a custom 'logs' folder:
 # logs/
+bin/
+obj/
