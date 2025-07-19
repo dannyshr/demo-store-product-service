@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using demo_store_product_service.Data;
 using demo_store_product_service.Config;
-using Microsoft.Extensions.Options; // Required for IOptions
+using Microsoft.Extensions.Options;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddApplicationInsightsTelemetry();
 
 // Bind the custom configuration section to your C# class
 builder.Services.Configure<DatabaseSettingsConfig>(
