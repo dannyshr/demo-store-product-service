@@ -9,6 +9,11 @@ public class Product
     [Key] // This attribute makes Id the primary key
     public int Id { get; set; }
 
+    public int CategoryId { get; set; } // Foreign key to Category
+
+    [ForeignKey("CategoryId")]
+    public Category Category { get; set; } = null!; // Navigation property to Category
+
     [Required] // This attribute makes the Name field non-nullable in the database
     [MaxLength(100)] // Sets a maximum length for the string column
     public required string Name { get; set; }
