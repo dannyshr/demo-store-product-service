@@ -1,8 +1,7 @@
 // demo-store-product-service/Models/Category.cs
 using System.ComponentModel.DataAnnotations; // For [Key], [Required]
-using System.ComponentModel.DataAnnotations.Schema; // For [Column] (optional for simple cases)
 
-namespace demo_store_product_service.Models; 
+namespace demo_store_product_service.Models;
 
 // This class represents a "Category" in your database.
 // Entity Framework Core will map this to a table named 'Categories' by default.
@@ -19,4 +18,6 @@ public class Category
     [Required]
     [MaxLength(100)]
     public string Name { get; set; } = string.Empty; // Initialize to empty string to prevent null reference warnings
+
+    public ICollection<Product> Products { get; set; } = new List<Product>(); // Navigation property to related
 }
