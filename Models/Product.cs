@@ -12,7 +12,7 @@ public class Product
     public int CategoryId { get; set; } // Foreign key to Category
 
     [ForeignKey("CategoryId")]
-    public Category Category { get; set; } = null!; // Navigation property to Category
+    public Category? Category { get; set; } // Navigation property to Category
 
     [Required] // This attribute makes the Name field non-nullable in the database
     [MaxLength(100)] // Sets a maximum length for the string column

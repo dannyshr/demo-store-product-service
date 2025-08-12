@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;    // For ToListAsync, FindAsync, SaveChang
 using demo_store_product_service.Data;  // The DbContext's namespace
 using demo_store_product_service.Models; // The Model entity's namespace
 using System.Collections.Generic;      // For IEnumerable
-using System.Threading.Tasks;          // For Task (asynchronous operations)
+using System.Threading.Tasks;
+using demo_store_product_service.DTOs;          // For Task (asynchronous operations)
 
 namespace demo_store_product_service.Controllers; // File-scoped namespace, like a Java package declaration at the top
 
@@ -28,18 +29,30 @@ public class CategoriesController : ControllerBase // ControllerBase is the base
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
     {
-        // Check if the Categories DbSet is null (shouldn't happen if configured correctly)
         if (_context.Categories == null)
         {
-            // Return a 404 Not Found if the resource is not available
             return NotFound("Categories DbSet is null.");
         }
 
-        // Use Entity Framework Core to query all categories from the database.
-        // .ToListAsync() executes the query asynchronously and returns a List of Category objects.
-        // 'await' pauses execution until the asynchronous operation completes.
-        // 'Task<...>' indicates that this method performs an asynchronous operation.
-        return await _context.Categories.ToListAsync();
+        // Use a LINQ query with .Select() to project from the EF models to DTOs
+        var categories = await _context.Categories
+            .Include(c => c.Products) // Still need to eager-load the products
+            .Select(c => new CategoryDto            {
+                Id = c.Id,
+                Name = c.Name,
+                Products = c.Products.Select(p => new ProductDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    StockQuantity = p.StockQuantity,
+                    ImageUrl = p.ImageUrl
+                }).ToList()
+            })
+            .ToListAsync();
+
+        return Ok(categories);
     }
 
     // GET: api/Categories/5

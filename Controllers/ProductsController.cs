@@ -56,6 +56,13 @@ public class ProductsController : ControllerBase // <-- Like extending a base co
     [HttpPost] // <-- Equivalent to Spring Boot's @PostMapping
     public async Task<ActionResult<Product>> PostProduct(Product product) // @RequestBody Product product
     {
+        // Check if the Category navigation property was populated from the request.
+        if (product.Category != null)
+        {
+            // Tell EF Core that the Category object is an existing entity,
+            // not a new one to be inserted.
+            _context.Entry(product.Category).State = EntityState.Unchanged;
+        }
         _context.Products.Add(product); // <-- Like JpaRepository.save(product) for a new entity
         await _context.SaveChangesAsync(); // <-- Essential! This actually commits changes to the database.
                                            // Analogous to Spring's @Transactional commit
